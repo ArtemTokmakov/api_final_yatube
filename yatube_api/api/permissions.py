@@ -1,18 +1,11 @@
-from rest_framework.permissions import (
-    BasePermission, SAFE_METHODS)
+from rest_framework.permissions import BasePermission, SAFE_METHODS
 
 
-class OwnerOrReadOnly(BasePermission):
-    message = 'Изменение чужого контента запрещено!'
+class AuthorOrReadOnly(BasePermission):
+    message = 'Нельзя менять чужие записи.'
 
     def has_permission(self, request, view):
-        return (
-            request.method in SAFE_METHODS
-            or request.user.is_authenticated
-        )
+        return request.method in SAFE_METHODS or request.user.is_authenticated
 
     def has_object_permission(self, request, view, obj):
-        return (
-            request.method in SAFE_METHODS
-            or obj.author == request.user
-        )
+        return request.method in SAFE_METHODS or obj.author == request.user
