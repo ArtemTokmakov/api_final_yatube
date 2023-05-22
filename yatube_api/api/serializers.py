@@ -15,15 +15,16 @@ class PostSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    post = serializers.ReadOnlyField(source='post.id')
     author = serializers.SlugRelatedField(
         slug_field='username',
         read_only=True,
+        default=serializers.CurrentUserDefault()
     )
 
     class Meta:
         fields = '__all__'
         model = Comment
+        read_only_fields = ('post',)
 
 
 class GroupSerializer(serializers.ModelSerializer):
@@ -50,13 +51,13 @@ class FollowSerializer(serializers.ModelSerializer):
         validators = [
             validators.UniqueTogetherValidator(
                 queryset=Follow.objects.all(),
-                fields=('user', 'following')
+                fields=('user', 'following'),
+                message='Подписка уже существует.'
             )
         ]
 
-    def validate(self, value):
-        following = value.get('following')
-        if self.context['request'].user == following:
+    def validate_following(self, value):
+        if self.context['request'].user == value:
             raise serializers.ValidationError(
                 'Нельзя подписываться на самого себя!')
         return value

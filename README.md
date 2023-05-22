@@ -54,35 +54,36 @@ Git
 
 
 Клонирование репозитория и переход в него в командной строке:
+```
 
 git clone git@github.com:ArtemTokmakov/api_final_yatube.git
 
 cd api_final_yatube
-
+```
 Cоздать и активировать виртуальное окружение:
-
+```
 pyhton -m venv venv
-
+```
 Если у вас Linux/MacOS
-
+```
 source venv/bin/activate
-
+```
 Если у вас windows
-
+```
 source venv/scripts/activate
-
+```
 Установка зависимостей из файла requirements.txt:
-
+```
 python -m pip install --upgrade pip
 
 pip install -r requirements.txt
-
+```
 Выполнить миграции:
-
+```
 python manage.py migrate
-
+```
 Запуск проекта:
-
+```
 python manage.py runserver
-
+```
 
